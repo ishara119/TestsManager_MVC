@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestManager.Web.Models;
 using TestManager.Web.Models.ViewModels;
@@ -44,13 +45,15 @@ namespace TestManager.Web.Controllers
            
             return View(viewModel);
         }
-        
+
+        [Authorize(Roles = "Coach")]
         public IActionResult AddNewAthlete(TestResultDetailsViewModel model,int testId)
         {
             _testManagerService.AddNewAthleteToTest(model.SelectedTestId, model.SelectedUserId, model.SelectedResult);
             return TestDetails(testId);
         }
 
+        [Authorize(Roles = "Coach")]
         public IActionResult DeleteTest(int testId)
         {
             _testManagerService.DeleteTest(testId);
